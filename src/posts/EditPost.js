@@ -25,7 +25,7 @@ export default class EditPost extends Component {
         this.setState({ error: data.error, redirectToProfile: true });
       } else {
         this.setState({
-          id: data._id,
+          id: data.postedBy._id,
           title: data.title,
           body: data.body,
           error: "",
@@ -166,7 +166,8 @@ export default class EditPost extends Component {
           onError={(i) => (i.target.src = `${DefaultPostPhoto}`)}
         />
         <h2 className="mt-5 mb-5">{title}</h2>
-        {this.editPostForm(title, body)}
+        {isAuthenticated().user.role === "admin" ||
+          (isAuthenticated().user._id === id && this.editPostForm(title, body))}
       </div>
     );
   }

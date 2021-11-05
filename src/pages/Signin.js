@@ -111,7 +111,7 @@ export default class Signin extends Component {
         ) : null}
         {this.signinForm(email, password)}
         <p>
-          <Link to="/forgot-password" className="text-danger">
+          <Link to="/forgot-password" className=" btn btn-raised btn-danger">
             {" "}
             Forgot Password
           </Link>

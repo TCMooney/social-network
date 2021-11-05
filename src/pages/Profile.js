@@ -121,6 +121,23 @@ export default function Profile(props) {
               isFollowing={isFollowing}
             />
           )}
+          <div>
+            {isAuthenticated().user && isAuthenticated().user.role === "admin" && (
+              <div className="card mt-5">
+                <div className="card-body">
+                  <h5 className="card-title">Admin</h5>
+                  <p className="mb-2 text-danger">Edit/Delete as Admin</p>
+                  <Link
+                    className="btn btn-raised btn-success"
+                    to={`/user/edit/${user._id}`}
+                  >
+                    Edit Profile
+                  </Link>
+                  <DeleteUser userId={user._id} />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="row">

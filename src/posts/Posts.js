@@ -9,19 +9,34 @@ export default class Posts extends Component {
 
     this.state = {
       posts: [],
+      page: 1,
       loading: false,
     };
   }
 
-  componentDidMount() {
-    this.setState({ loading: true });
-    list().then((data) => {
+  loadPosts = (page) => {
+    list(page).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         this.setState({ posts: data, loading: false });
       }
     });
+  };
+
+  loadMore = (number) => {
+    this.setState({ page: this.state.page + number });
+    this.loadPosts(this.state.page + number);
+  };
+
+  loadLess = (number) => {
+    this.setState({ page: this.state.page - number });
+    this.loadPosts(this.state.page - number);
+  };
+
+  componentDidMount() {
+    this.setState({ loading: true });
+    this.loadPosts(this.state.page);
   }
 
   renderPosts = (posts) => {
@@ -63,11 +78,31 @@ export default class Posts extends Component {
   };
 
   render() {
-    const { posts, loading } = this.state;
+    const { posts, loading, page } = this.state;
     return (
       <div className="container">
         <h2 className="mt-5 mb-5">{loading ? "Loading" : "Recent Posts"}</h2>
         {this.renderPosts(posts)}
+        {page > 1 ? (
+          <button
+            className="btn btn-raised btn-warning ms-5 mt-5 mb-5"
+            onClick={() => this.loadLess(1)}
+          >
+            Previous ({this.state.page - 1})
+          </button>
+        ) : (
+          ""
+        )}
+        {posts.length ? (
+          <button
+            className="btn btn-raised btn-success mt-5 mb-5"
+            onClick={() => this.loadMore(1)}
+          >
+            Next ({page + 1})
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     );
   }

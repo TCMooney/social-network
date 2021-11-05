@@ -17,6 +17,7 @@ export default class EditProfile extends Component {
       error: "",
       loading: false,
       fileSize: 0,
+      redirectToAdmin: false,
     };
   }
 
@@ -50,11 +51,17 @@ export default class EditProfile extends Component {
             error: data.error,
           });
         } else {
-          updateUser(data, () => {
-            this.setState({
-              redirectToProfile: true,
+          if (isAuthenticated().user.role === "subscriber") {
+            updateUser(data, () => {
+              this.setState({
+                redirectToProfile: true,
+              });
             });
-          });
+          } else if (isAuthenticated().user.role === "admin") {
+            this.setState({
+              redirectToAdmin: true,
+            });
+          }
         }
       });
     }
@@ -174,10 +181,15 @@ export default class EditProfile extends Component {
       id,
       error,
       loading,
+      redirectToAdmin,
     } = this.state;
 
     if (redirectToProfile) {
       return <Redirect to={`/profile/${id}`} />;
+    }
+
+    if (redirectToAdmin) {
+      return <Redirect to={"/admin"} />;
     }
 
     const photoUrl = id
@@ -208,6 +220,9 @@ export default class EditProfile extends Component {
           onError={(i) => (i.target.src = `${DefaultProfile}`)}
         />
         {this.signupForm(name, email, password, about)}
+        {isAuthenticated().user.role === "admin" ||
+          (isAuthenticated().user._id === id &&
+            this.signupForm(name, email, password, about))}
       </div>
     );
   }

@@ -84,6 +84,18 @@ function Menu({ history }) {
                 New Post
               </Link>
             </li>
+            {isAuthenticated() && isAuthenticated().user.role === "admin" && (
+              <li className="nav-item">
+                <Link
+                  to={"/admin"}
+                  style={isActive(history, "/admin")}
+                  className="nav-link text-dark"
+                >
+                  {" "}
+                  Admin
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
               <button
                 className="nav-link text-dark"

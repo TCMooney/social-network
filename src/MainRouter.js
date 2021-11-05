@@ -14,6 +14,7 @@ import SinglePost from "./posts/SinglePost";
 import EditPost from "./posts/EditPost";
 import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
+import Admin from "./admin/Admin";
 
 export default function MainRouter() {
   return (
@@ -36,6 +37,7 @@ export default function MainRouter() {
         <Route exact path="/post/:postId" component={SinglePost} />
         <PrivateRoute exact path="/post/edit/:postId" component={EditPost} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
+        <PrivateRoute path="/admin" component={Admin} />
       </Switch>
     </div>
   );
